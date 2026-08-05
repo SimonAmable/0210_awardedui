@@ -17,15 +17,6 @@ const usageBySlug = {
   <span>✳</span>
   <span>Built to ship</span>
 </MarqueeStrip>`,
-  "editorial-image-reveal": `import { EditorialImageReveal } from "@/components/ui/editorial-image-reveal"
-
-<EditorialImageReveal
-  eyebrow="Architecture"
-  title="A quiet study in material and light."
-  year="2026"
-  href="/projects/architecture"
-  media={<img src="/project-image.jpg" alt="" />}
-/>`,
   "smoke-shader-background": `import { SmokeShaderBackground } from "@/components/ui/smoke-shader-background"
 
 <section className="relative h-96 overflow-hidden bg-black">
@@ -46,6 +37,9 @@ const usageBySlug = {
   />
   <div className="relative z-10 p-8 text-white">Your content</div>
 </section>`,
+  "imposter-syndrome-shader": `import { ImposterSyndromeShader } from "@/components/ui/imposter-syndrome-shader"
+
+<ImposterSyndromeShader />`,
 } as const
 
 export function generateStaticParams() {

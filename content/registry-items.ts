@@ -21,9 +21,9 @@ ${command}`
 }
 
 const marqueeCommand = `pnpm dlx shadcn@latest add ${registryUrl("marquee-strip")}`
-const editorialCommand = `pnpm dlx shadcn@latest add ${registryUrl("editorial-image-reveal")}`
 const smokeShaderCommand = `pnpm dlx shadcn@latest add ${registryUrl("smoke-shader-background")}`
 const causticsShaderCommand = `pnpm dlx shadcn@latest add ${registryUrl("caustics-shader-background")}`
+const imposterSyndromeShaderCommand = `pnpm dlx shadcn@latest add ${registryUrl("imposter-syndrome-shader")}`
 
 export const registryItems: RegistryItemMetadata[] = [
   {
@@ -42,23 +42,6 @@ export const registryItems: RegistryItemMetadata[] = [
     performance: "low",
     installCommand: marqueeCommand,
     implementationPrompt: implementationPrompt("Marquee Strip", marqueeCommand, "an existing hero, client list, announcement, or section divider"),
-  },
-  {
-    name: "editorial-image-reveal",
-    slug: "editorial-image-reveal",
-    title: "Editorial Image Reveal",
-    description: "An editorial project card with a clean CSS mask reveal and fully custom media content.",
-    category: "Media",
-    status: "new",
-    engine: "css",
-    dependencies: [],
-    registryDependencies: [],
-    tags: ["image", "reveal", "portfolio"],
-    touchSupport: "full",
-    reducedMotion: true,
-    performance: "low",
-    installCommand: editorialCommand,
-    implementationPrompt: implementationPrompt("Editorial Image Reveal", editorialCommand, "an existing featured-work, case-study, or portfolio section"),
   },
   {
     name: "smoke-shader-background",
@@ -93,5 +76,22 @@ export const registryItems: RegistryItemMetadata[] = [
     performance: "high",
     installCommand: causticsShaderCommand,
     implementationPrompt: implementationPrompt("Caustics Shader Background", causticsShaderCommand, "a relative, overflow-hidden hero or feature section, with content layered above the canvas"),
+  },
+  {
+    name: "imposter-syndrome-shader",
+    slug: "imposter-syndrome-shader",
+    title: "Imposter Syndrome Shader",
+    description: "An atmospheric interactive sky shader with clouds, sun, moon, rain, aurora, and weather effects.",
+    category: "Backgrounds",
+    status: "experimental",
+    engine: "webgl",
+    dependencies: [],
+    registryDependencies: [],
+    tags: ["sky", "clouds", "weather", "shadertoy", "shader", "background"],
+    touchSupport: "full",
+    reducedMotion: false,
+    performance: "high",
+    installCommand: imposterSyndromeShaderCommand,
+    implementationPrompt: implementationPrompt("Imposter Syndrome Shader", imposterSyndromeShaderCommand, "a relative, overflow-hidden hero or atmospheric feature section"),
   },
 ]

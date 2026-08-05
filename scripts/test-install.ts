@@ -6,7 +6,7 @@ import path from "node:path"
 const root = process.cwd()
 const fixture = path.join(root, "fixtures/next-shadcn-app")
 const port = 3200 + Math.floor(Math.random() * 500)
-const registrySlugs = ["marquee-strip", "editorial-image-reveal", "smoke-shader-background", "caustics-shader-background"]
+const registrySlugs = ["marquee-strip", "smoke-shader-background", "caustics-shader-background", "imposter-syndrome-shader"]
 const registryUrls = registrySlugs.map((slug) => `http://127.0.0.1:${port}/r/${slug}.json`)
 
 function run(command: string, args: string[], cwd = root) {
