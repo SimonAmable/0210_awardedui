@@ -53,7 +53,42 @@
 }
 
 @layer components {
+  .character-logo__gaze {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: character-logo-look 7s ease-in-out 1.5s infinite;
+  }
+
+  .character-logo__eyes {
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+
+  .character-logo:hover .character-logo__eyes,
+  .character-logo--clicked {
+    animation: character-logo-blink 420ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
   div.isolate[class~="h-[22rem]"][class~="rounded-md"] > div.relative.z-10 {
     display: none;
+  }
+}
+
+@keyframes character-logo-look {
+  0%, 35%, 100% { transform: translateX(0); }
+  44%, 54% { transform: translateX(-2px); }
+  63%, 73% { transform: translateX(2px); }
+}
+
+@keyframes character-logo-blink {
+  0%, 42%, 100% { transform: scaleY(1); }
+  48%, 56% { transform: scaleY(0.08); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .character-logo__gaze,
+  .character-logo:hover .character-logo__eyes,
+  .character-logo--clicked {
+    animation: none;
   }
 }
