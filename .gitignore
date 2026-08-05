@@ -1,0 +1,9 @@
+node_modules/
+.next/
+out/
+public/r/
+fixtures/next-shadcn-app/node_modules/
+fixtures/next-shadcn-app/.next/
+*.tsbuildinfo
+.env*
+!.env.example

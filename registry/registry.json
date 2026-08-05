@@ -1,0 +1,43 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "awwward-winning-ui",
+  "homepage": "https://example.com",
+  "items": [
+    {
+      "name": "marquee-strip",
+      "type": "registry:ui",
+      "title": "Marquee Strip",
+      "description": "A responsive, pauseable content ribbon for statements, logos, and editorial details.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [{ "path": "registry/components/marquee-strip.tsx", "type": "registry:ui", "target": "components/ui/marquee-strip.tsx" }]
+    },
+    {
+      "name": "editorial-image-reveal",
+      "type": "registry:ui",
+      "title": "Editorial Image Reveal",
+      "description": "An editorial project card with a clean CSS mask reveal and fully custom media content.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [{ "path": "registry/components/editorial-image-reveal.tsx", "type": "registry:ui", "target": "components/ui/editorial-image-reveal.tsx" }]
+    },
+    {
+      "name": "smoke-shader-background",
+      "type": "registry:ui",
+      "title": "Smoke Shader Background",
+      "description": "A self-contained WebGL smoke background with cursor effects and an expansive prop surface.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [{ "path": "registry/components/shader-background.tsx", "type": "registry:ui", "target": "components/ui/shader-background.tsx" }, { "path": "registry/components/smoke-shader-background.tsx", "type": "registry:ui", "target": "components/ui/smoke-shader-background.tsx" }]
+    },
+    {
+      "name": "caustics-shader-background",
+      "type": "registry:ui",
+      "title": "Caustics Shader Background",
+      "description": "A self-contained WebGL caustics background with cursor effects and an expansive prop surface.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [{ "path": "registry/components/shader-background.tsx", "type": "registry:ui", "target": "components/ui/shader-background.tsx" }, { "path": "registry/components/caustics-shader-background.tsx", "type": "registry:ui", "target": "components/ui/caustics-shader-background.tsx" }]
+    }
+  ]
+}
