@@ -1,13 +1,14 @@
-import { rm, access } from "node:fs/promises"
+import { access, mkdir, readFile, rm, writeFile } from "node:fs/promises"
 import { spawn, type ChildProcess } from "node:child_process"
 import net from "node:net"
 import path from "node:path"
 
+import { registryItems } from "../registry/manifest"
+
 const root = process.cwd()
 const fixture = path.join(root, "fixtures/next-shadcn-app")
 const port = 3200 + Math.floor(Math.random() * 500)
-const registrySlugs = ["marquee-strip", "smoke-shader-background", "caustics-shader-background", "imposter-syndrome-shader"]
-const registryUrls = registrySlugs.map((slug) => `http://127.0.0.1:${port}/r/${slug}.json`)
+const registryUrls = registryItems.map((item) => `http://127.0.0.1:${port}/r/${item.name}.json`)
 
 function run(command: string, args: string[], cwd = root) {
   return new Promise<void>((resolve, reject) => {
@@ -23,29 +24,71 @@ function startServer(): ChildProcess {
 
 async function waitForServer() {
   for (let attempt = 0; attempt < 40; attempt++) {
-    const connected = await new Promise<boolean>((resolve) => { const socket = net.connect(port, "127.0.0.1"); socket.once("connect", () => { socket.end(); resolve(true) }); socket.once("error", () => resolve(false)) })
+    const connected = await new Promise<boolean>((resolve) => {
+      const socket = net.connect(port, "127.0.0.1")
+      socket.once("connect", () => { socket.end(); resolve(true) })
+      socket.once("error", () => resolve(false))
+    })
     if (connected) return
     await new Promise((resolve) => setTimeout(resolve, 500))
   }
   throw new Error("Timed out waiting for local registry server.")
 }
 
+function resolveFixtureTarget(target: string) {
+  if (target.startsWith("~/")) return target.slice(2)
+  const separator = target.indexOf("/")
+  const alias = separator === -1 ? target : target.slice(0, separator)
+  const rest = separator === -1 ? "" : target.slice(separator + 1)
+  const aliasMap: Record<string, string> = {
+    "@ui": "components/ui",
+    "@components": "components",
+    "@lib": "lib",
+    "@hooks": "hooks",
+  }
+  return aliasMap[alias] ? path.join(aliasMap[alias], rest ?? "") : target
+}
+
+function fixturePath(relativeTarget: string) {
+  const resolved = path.resolve(fixture, relativeTarget)
+  const fixtureRoot = `${path.resolve(fixture)}${path.sep}`
+  if (!resolved.startsWith(fixtureRoot)) throw new Error(`Registry target escapes fixture: ${relativeTarget}`)
+  return resolved
+}
+
 async function main() {
   await run("pnpm", ["registry:build"])
   await run("pnpm", ["build"])
-  await Promise.all(registrySlugs.map((slug) => rm(path.join(fixture, "components/ui", `${slug}.tsx`), { force: true })))
+
+  const targets = [...new Set(registryItems.flatMap((item) => item.files.map((file) => resolveFixtureTarget(file.target ?? file.path))))]
+  const originalTargets = new Map<string, string | null>()
+  await Promise.all(targets.map(async (target) => {
+    try {
+      originalTargets.set(target, await readFile(fixturePath(target), "utf8"))
+    } catch {
+      originalTargets.set(target, null)
+    }
+  }))
+  await Promise.all(targets.map((target) => rm(fixturePath(target), { force: true })))
   await run("pnpm", ["install"], fixture)
+
   const server = startServer()
   try {
     await waitForServer()
     await run("pnpm", ["dlx", "shadcn@latest", "add", ...registryUrls, "--yes"], fixture)
-    await Promise.all(registrySlugs.map((slug) => access(path.join(fixture, "components/ui", `${slug}.tsx`))))
+    await Promise.all(targets.map((target) => access(fixturePath(target))))
     await run("pnpm", ["typecheck"], fixture)
     await run("pnpm", ["build"], fixture)
   } finally {
     server.kill()
+    await Promise.all([...originalTargets.entries()].map(async ([target, content]) => {
+      const destination = fixturePath(target)
+      if (content === null) return rm(destination, { force: true })
+      await mkdir(path.dirname(destination), { recursive: true })
+      await writeFile(destination, content)
+    }))
   }
-  console.log("Clean fixture installed, type-checked, and built all registry components.")
+  console.log(`Clean fixture installed, type-checked, and built ${registryItems.length} registry components.`)
 }
 
 main().catch((error: unknown) => { console.error(error); process.exit(1) })

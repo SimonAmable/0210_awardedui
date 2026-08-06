@@ -10,6 +10,7 @@
     "typecheck": "tsc --noEmit",
     "registry:build": "tsx scripts/build-registry.ts",
     "registry:validate": "tsx scripts/validate-registry.ts",
+    "registry:validate:official": "pnpm dlx shadcn@latest registry validate",
     "registry:test-install": "tsx scripts/test-install.ts",
     "verify": "pnpm registry:build && pnpm registry:validate && pnpm lint && pnpm typecheck && pnpm build && pnpm registry:test-install"
   },

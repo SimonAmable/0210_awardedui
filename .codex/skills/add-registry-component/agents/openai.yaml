@@ -1,0 +1,4 @@
+interface:
+  display_name: "Add Registry Component"
+  short_description: "Add shadcn registry components safely"
+  default_prompt: "Use $add-registry-component to add and validate a new component in this registry."

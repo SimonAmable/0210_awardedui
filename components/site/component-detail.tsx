@@ -7,9 +7,7 @@ import { PreviewCodeTabs } from "@/components/site/preview-code-tabs"
 import { Separator } from "@/components/ui/separator"
 import type { RegistryItemMetadata } from "@/lib/registry-types"
 
-type ComponentSlug = "marquee-strip" | "smoke-shader-background" | "caustics-shader-background" | "imposter-syndrome-shader"
-
-export function ComponentDetail({ item, source, usage }: { item: RegistryItemMetadata; source: string; usage: string }) {
+export function ComponentDetail({ item, source }: { item: RegistryItemMetadata; source: string }) {
   return (
     <main className="min-w-0 max-w-4xl px-5 py-10 sm:px-10 sm:py-12">
       <nav aria-label="Breadcrumb" className="text-sm text-muted-foreground">
@@ -21,7 +19,7 @@ export function ComponentDetail({ item, source, usage }: { item: RegistryItemMet
         <p className="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground">{item.description}</p>
       </div>
       <section className="mt-8">
-        <PreviewCodeTabs slug={item.slug as ComponentSlug} code={source} />
+        <PreviewCodeTabs item={item} code={source} />
       </section>
       <Separator className="my-10" />
       <section>
@@ -31,7 +29,7 @@ export function ComponentDetail({ item, source, usage }: { item: RegistryItemMet
       </section>
       <section className="mt-10">
         <h2 className="text-lg font-semibold">Usage</h2>
-        <div className="mt-3"><CodeBlock code={usage} label="Copy usage" /></div>
+        <div className="mt-3"><CodeBlock code={item.usage} label="Copy usage" /></div>
       </section>
       <section className="mt-10">
         <div className="flex items-center justify-between gap-4">
@@ -45,7 +43,7 @@ export function ComponentDetail({ item, source, usage }: { item: RegistryItemMet
         <div><h2 className="text-sm font-semibold">Touch</h2><p className="mt-2 text-sm text-muted-foreground">{item.touchSupport}</p></div>
         <div><h2 className="text-sm font-semibold">Motion</h2><p className="mt-2 text-sm text-muted-foreground">{item.reducedMotion ? "Reduced-motion support" : "No reduced-motion mode"}</p></div>
       </section>
-      {item.slug === "imposter-syndrome-shader" && <p className="mt-10 border-t pt-6 text-xs leading-5 text-muted-foreground">Shader reference: <Link href="https://www.shadertoy.com/view/cdlyWr" target="_blank" rel="noreferrer" className="underline underline-offset-4 hover:text-foreground">“Imposter Syndrome” by stilltravelling on Shadertoy</Link>.</p>}
+      {item.reference && <p className="mt-10 border-t pt-6 text-xs leading-5 text-muted-foreground">Shader reference: <Link href={item.reference.href} target="_blank" rel="noreferrer" className="underline underline-offset-4 hover:text-foreground">{item.reference.label}</Link>.</p>}
     </main>
   )
 }
