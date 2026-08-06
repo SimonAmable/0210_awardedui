@@ -4,7 +4,7 @@ A curated shadcn registry for production-ready creative React components. It is 
 
 ## Stack
 
-Next.js App Router, TypeScript, Tailwind CSS, shadcn-compatible registry JSON, pnpm, and Lucide icons.
+Next.js App Router, TypeScript, Tailwind CSS, Base UI primitives, shadcn-compatible registry JSON, pnpm, and Lucide icons.
 
 ## Local development
 
@@ -14,7 +14,7 @@ pnpm registry:build
 pnpm dev
 ```
 
-Open `http://localhost:3000`. Set `NEXT_PUBLIC_SITE_URL` to the deployed origin to generate production installation commands.
+Open `http://localhost:3000`. Set `NEXT_PUBLIC_SITE_URL` to the deployed origin and `NEXT_PUBLIC_GITHUB_URL` to the repository URL. These values power the registry homepage, install commands, and site GitHub link.
 
 ## Install a component
 

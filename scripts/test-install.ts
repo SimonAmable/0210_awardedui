@@ -7,6 +7,7 @@ import { registryItems } from "../registry/manifest"
 
 const root = process.cwd()
 const fixture = path.join(root, "fixtures/next-shadcn-app")
+const fixtureLockfile = path.join(fixture, "pnpm-lock.yaml")
 const port = 3200 + Math.floor(Math.random() * 500)
 const registryUrls = registryItems.map((item) => `http://127.0.0.1:${port}/r/${item.name}.json`)
 
@@ -70,17 +71,19 @@ async function main() {
     }
   }))
   await Promise.all(targets.map((target) => rm(fixturePath(target), { force: true })))
-  await run("pnpm", ["install"], fixture)
-
-  const server = startServer()
+  await rm(fixtureLockfile, { force: true })
+  let server: ChildProcess | null = null
   try {
+    await run("pnpm", ["install", "--ignore-workspace"], fixture)
+    server = startServer()
     await waitForServer()
     await run("pnpm", ["dlx", "shadcn@latest", "add", ...registryUrls, "--yes"], fixture)
     await Promise.all(targets.map((target) => access(fixturePath(target))))
     await run("pnpm", ["typecheck"], fixture)
     await run("pnpm", ["build"], fixture)
   } finally {
-    server.kill()
+    server?.kill()
+    await rm(fixtureLockfile, { force: true })
     await Promise.all([...originalTargets.entries()].map(async ([target, content]) => {
       const destination = fixturePath(target)
       if (content === null) return rm(destination, { force: true })

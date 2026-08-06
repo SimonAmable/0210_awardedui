@@ -1,8 +1,8 @@
 export const siteConfig = {
   name: "AwwwardWinning UI",
   description: "A curated registry of production-ready creative components and motion effects for React.",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
-  githubUrl: "https://github.com/your-org/awwward-winning-ui",
+  url: (process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000").replace(/\/+$/, ""),
+  githubUrl: process.env.NEXT_PUBLIC_GITHUB_URL ?? "https://github.com/SimonAmable/0210_awardedui",
 }
 
 export function registryUrl(slug: string) {

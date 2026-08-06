@@ -1,7 +1,7 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry.json",
   "name": "awwward-winning-ui",
-  "homepage": "http://localhost:3000",
+  "homepage": "https://0210-awardedui.vercel.app",
   "items": [
     {
       "name": "marquee-strip",

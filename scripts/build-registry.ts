@@ -1,9 +1,10 @@
 import { mkdir, readFile, rm, writeFile } from "node:fs/promises"
 import path from "node:path"
+import { loadEnvConfig } from "@next/env"
 
-import { registryItems } from "../registry/manifest"
-import { siteConfig } from "../lib/site"
 import type { RegistryItemMetadata } from "../lib/registry-types"
+
+loadEnvConfig(process.cwd())
 
 const registrySchema = "https://ui.shadcn.com/schema/registry.json"
 const registryItemSchema = "https://ui.shadcn.com/schema/registry-item.json"
@@ -21,6 +22,10 @@ function registryDefinition(item: RegistryItemMetadata) {
 }
 
 async function main() {
+  const [{ registryItems }, { siteConfig }] = await Promise.all([
+    import("../registry/manifest"),
+    import("../lib/site"),
+  ])
   const root = process.cwd()
   const output = path.join(root, "public/r")
   const catalog = {
